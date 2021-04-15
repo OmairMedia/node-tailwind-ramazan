@@ -1,0 +1,4 @@
+section .calender .calender-card {
+  max-width: 700px;
+  display: none;
+}

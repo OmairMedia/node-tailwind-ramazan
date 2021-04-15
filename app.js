@@ -5,9 +5,14 @@ const session = require("express-session");
 const flash = require("connect-flash");
 const dotenv = require("dotenv");
 const path = require("path");
+const { connectMongoDb } = require("./Db/db");
+const { clock } = require("./plugins/clock");
 
 // Setting Up Config .env
 dotenv.config({ path: "./Config/config.env" });
+
+// Connecting MongoDb
+connectMongoDb();
 
 // Initializing App
 const app = express();
@@ -33,7 +38,14 @@ app.use(
 app.use(flash());
 
 // Setting Up View Engine
-app.engine(".hbs", exphbs({ extname: ".hbs", defaultLayout: "main" }));
+app.engine(
+  ".hbs",
+  exphbs({
+    extname: ".hbs",
+    defaultLayout: "main",
+    helpers: { clock },
+  })
+);
 app.set("view engine", ".hbs");
 
 // Routes Middlewares
